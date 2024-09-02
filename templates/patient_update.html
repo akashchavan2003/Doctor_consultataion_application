@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Patient Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-card h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .form-control-file {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem; 
+            padding: 5px;
+        }
+    </style>
+{% extends "patient_base.html" %}
+{% block title %}Dashboard{% endblock %}
+</head>
+<body>
+{% block content %}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <div class="container">
+        <div class="form-card">
+            <h3>Patient Information</h3>
+            <form method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ patient.first_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ patient.last_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ patient.date_of_birth }}">
+                </div>
+                <div class="form-group">
+                    <label for="age">Mobile Number:</label>
+                    <input type="number" class="form-control" id="Mobile" name="phone_number" value="{{ patient.phone_number }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" class="form-control" id="age" name="age" value="{{ patient.age }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm):</label>
+                    <input type="number" class="form-control" id="height" name="height" value="{{ patient.height }}" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg):</label>
+                    <input type="number" class="form-control" id="weight" name="weight" value="{{ patient.weight }}" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="conditions">Medical Conditions:</label>
+                    <select class="form-control" id="conditions" name="conditions">
+                        <option value="none" {% if patient.conditions == 'none' %}selected{% endif %}>None</option>
+                        <optgroup label="Cardiovascular Diseases">
+                            <option value="hypertension" {% if patient.conditions == 'hypertension' %}selected{% endif %}>Hypertension</option>
+                            <option value="coronary_artery_disease" {% if patient.conditions == 'coronary_artery_disease' %}selected{% endif %}>Coronary Artery Disease</option>
+                            <option value="heart_attack" {% if patient.conditions == 'heart_attack' %}selected{% endif %}>Heart Attack</option>
+                            <option value="heart_failure" {% if patient.conditions == 'heart_failure' %}selected{% endif %}>Heart Failure</option>
+                            <option value="stroke" {% if patient.conditions == 'stroke' %}selected{% endif %}>Stroke</option>
+                            <option value="atrial_fibrillation" {% if patient.conditions == 'atrial_fibrillation' %}selected{% endif %}>Atrial Fibrillation</option>
+                        </optgroup>
+                        <optgroup label="Respiratory Diseases">
+                            <option value="asthma" {% if patient.conditions == 'asthma' %}selected{% endif %}>Asthma</option>
+                            <option value="copd" {% if patient.conditions == 'copd' %}selected{% endif %}>Chronic Obstructive Pulmonary Disease (COPD)</option>
+                            <option value="pneumonia" {% if patient.conditions == 'pneumonia' %}selected{% endif %}>Pneumonia</option>
+                            <option value="tuberculosis" {% if patient.conditions == 'tuberculosis' %}selected{% endif %}>Tuberculosis</option>
+                            <option value="bronchitis" {% if patient.conditions == 'bronchitis' %}selected{% endif %}>Bronchitis</option>
+                            <option value="emphysema" {% if patient.conditions == 'emphysema' %}selected{% endif %}>Emphysema</option>
+                        </optgroup>
+                        <optgroup label="Endocrine Disorders">
+                            <option value="diabetes" {% if patient.conditions == 'diabetes' %}selected{% endif %}>Diabetes Mellitus</option>
+                            <option value="hypothyroidism" {% if patient.conditions == 'hypothyroidism' %}selected{% endif %}>Hypothyroidism</option>
+                            <option value="hyperthyroidism" {% if patient.conditions == 'hyperthyroidism' %}selected{% endif %}>Hyperthyroidism</option>
+                            <option value="cushings_syndrome" {% if patient.conditions == 'cushings_syndrome' %}selected{% endif %}>Cushing's Syndrome</option>
+                            <option value="addisons_disease" {% if patient.conditions == 'addisons_disease' %}selected{% endif %}>Addison's Disease</option>
+                        </optgroup>
+                        <optgroup label="Gastrointestinal Disorders">
+                            <option value="gerd" {% if patient.conditions == 'gerd' %}selected{% endif %}>Gastroesophageal Reflux Disease (GERD)</option>
+                            <option value="peptic_ulcer" {% if patient.conditions == 'peptic_ulcer' %}selected{% endif %}>Peptic Ulcer Disease</option>
+                            <option value="ibs" {% if patient.conditions == 'ibs' %}selected{% endif %}>Irritable Bowel Syndrome (IBS)</option>
+                            <option value="crohns_disease" {% if patient.conditions == 'crohns_disease' %}selected{% endif %}>Crohn’s Disease</option>
+                            <option value="ulcerative_colitis" {% if patient.conditions == 'ulcerative_colitis' %}selected{% endif %}>Ulcerative Colitis</option>
+                            <option value="hepatitis" {% if patient.conditions == 'hepatitis' %}selected{% endif %}>Hepatitis</option>
+                        </optgroup>
+                        <optgroup label="Neurological Disorders">
+                            <option value="epilepsy" {% if patient.conditions == 'epilepsy' %}selected{% endif %}>Epilepsy</option>
+                            <option value="parkinsons_disease" {% if patient.conditions == 'parkinsons_disease' %}selected{% endif %}>Parkinson’s Disease</option>
+                            <option value="alzheimers_disease" {% if patient.conditions == 'alzheimers_disease' %}selected{% endif %}>Alzheimer’s Disease</option>
+                            <option value="multiple_sclerosis" {% if patient.conditions == 'multiple_sclerosis' %}selected{% endif %}>Multiple Sclerosis</option>
+                            <option value="migraine" {% if patient.conditions == 'migraine' %}selected{% endif %}>Migraine</option>
+                            <option value="stroke" {% if patient.conditions == 'stroke' %}selected{% endif %}>Stroke</option>
+                        </optgroup>
+                        <optgroup label="Musculoskeletal Disorders">
+                            <option value="osteoarthritis" {% if patient.conditions == 'osteoarthritis' %}selected{% endif %}>Osteoarthritis</option>
+                            <option value="rheumatoid_arthritis" {% if patient.conditions == 'rheumatoid_arthritis' %}selected{% endif %}>Rheumatoid Arthritis</option>
+                            <option value="osteoporosis" {% if patient.conditions == 'osteoporosis' %}selected{% endif %}>Osteoporosis</option>
+                            <option value="fibromyalgia" {% if patient.conditions == 'fibromyalgia' %}selected{% endif %}>Fibromyalgia</option>
+                            <option value="gout" {% if patient.conditions == 'gout' %}selected{% endif %}>Gout</option>
+                        </optgroup>
+                        <optgroup label="Mental Health Disorders">
+                            <option value="depression" {% if patient.conditions == 'depression' %}selected{% endif %}>Depression</option>
+                            <option value="anxiety" {% if patient.conditions == 'anxiety' %}selected{% endif %}>Anxiety Disorders</option>
+                            <option value="bipolar_disorder" {% if patient.conditions == 'bipolar_disorder' %}selected{% endif %}>Bipolar Disorder</option>
+                            <option value="schizophrenia" {% if patient.conditions == 'schizophrenia' %}selected{% endif %}>Schizophrenia</option>
+                            <option value="ptsd" {% if patient.conditions == 'ptsd' %}selected{% endif %}>Post-Traumatic Stress Disorder (PTSD)</option>
+                        </optgroup>
+                        <optgroup label="Infectious Diseases">
+                            <option value="influenza" {% if patient.conditions == 'influenza' %}selected{% endif %}>Influenza (Flu)</option>
+                            <option value="hiv_aids" {% if patient.conditions == 'hiv_aids' %}selected{% endif %}>HIV/AIDS</option>
+                            <option value="hepatitis_b" {% if patient.conditions == 'hepatitis_b' %}selected{% endif %}>Hepatitis B</option>
+                            <option value="hepatitis_c" {% if patient.conditions == 'hepatitis_c' %}selected{% endif %}>Hepatitis C</option>
+                            <option value="sti" {% if patient.conditions == 'sti' %}selected{% endif %}>Sexually Transmitted Infections (STIs)</option>
+                            <option value="covid_19" {% if patient.conditions == 'covid_19' %}selected{% endif %}>COVID-19</option>
+                        </optgroup>
+                        <optgroup label="Dermatological Conditions">
+                            <option value="eczema" {% if patient.conditions == 'eczema' %}selected{% endif %}>Eczema</option>
+                            <option value="psoriasis" {% if patient.conditions == 'psoriasis' %}selected{% endif %}>Psoriasis</option>
+                            <option value="acne" {% if patient.conditions == 'acne' %}selected{% endif %}>Acne</option>
+                            <option value="rosacea" {% if patient.conditions == 'rosacea' %}selected{% endif %}>Rosacea</option>
+                            <option value="contact_dermatitis" {% if patient.conditions == 'contact_dermatitis' %}selected{% endif %}>Contact Dermatitis</option>
+                        </optgroup>
+                        <optgroup label="Autoimmune Diseases">
+                            <option value="lupus" {% if patient.conditions == 'lupus' %}selected{% endif %}>Lupus</option>
+                            <option value="scleroderma" {% if patient.conditions == 'scleroderma' %}selected{% endif %}>Scleroderma</option>
+                            <option value="sjogrens_syndrome" {% if patient.conditions == 'sjogrens_syndrome' %}selected{% endif %}>Sjögren’s Syndrome</option>
+                        </optgroup>
+                        <optgroup label="Kidney Disorders">
+                            <option value="chronic_kidney_disease" {% if patient.conditions == 'chronic_kidney_disease' %}selected{% endif %}>Chronic Kidney Disease</option>
+                            <option value="acute_kidney_injury" {% if patient.conditions == 'acute_kidney_injury' %}selected{% endif %}>Acute Kidney Injury</option>
+                            <option value="kidney_stones" {% if patient.conditions == 'kidney_stones' %}selected{% endif %}>Kidney Stones</option>
+                            <option value="uti" {% if patient.conditions == 'uti' %}selected{% endif %}>Urinary Tract Infection (UTI)</option>
+                        </optgroup>
+                        <optgroup label="Cancer">
+                            <option value="breast_cancer" {% if patient.conditions == 'breast_cancer' %}selected{% endif %}>Breast Cancer</option>
+                            <option value="lung_cancer" {% if patient.conditions == 'lung_cancer' %}selected{% endif %}>Lung Cancer</option>
+                            <option value="prostate_cancer" {% if patient.conditions == 'prostate_cancer' %}selected{% endif %}>Prostate Cancer</option>
+                            <option value="colorectal_cancer" {% if patient.conditions == 'colorectal_cancer' %}selected{% endif %}>Colorectal Cancer</option>
+                            <option value="skin_cancer" {% if patient.conditions == 'skin_cancer' %}selected{% endif %}>Skin Cancer</option>
+                        </optgroup>
+                        <optgroup label="Metabolic Disorders">
+                            <option value="obesity" {% if patient.conditions == 'obesity' %}selected{% endif %}>Obesity</option>
+                            <option value="hyperlipidemia" {% if patient.conditions == 'hyperlipidemia' %}selected{% endif %}>Hyperlipidemia (High Cholesterol)</option>
+                            <option value="pku" {% if patient.conditions == 'pku' %}selected{% endif %}>Phenylketonuria (PKU)</option>
+                        </optgroup>
+                        <optgroup label="Blood Disorders">
+                            <option value="anemia" {% if patient.conditions == 'anemia' %}selected{% endif %}>Anemia</option>
+                            <option value="hemophilia" {% if patient.conditions == 'hemophilia' %}selected{% endif %}>Hemophilia</option>
+                            <option value="sickle_cell_disease" {% if patient.conditions == 'sickle_cell_disease' %}selected{% endif %}>Sickle Cell Disease</option>
+                            <option value="thalassemia" {% if patient.conditions == 'thalassemia' %}selected{% endif %}>Thalassemia</option>
+                        </optgroup>
+                        <optgroup label="Genetic Disorders">
+                            <option value="cystic_fibrosis" {% if patient.conditions == 'cystic_fibrosis' %}selected{% endif %}>Cystic Fibrosis</option>
+                            <option value="down_syndrome" {% if patient.conditions == 'down_syndrome' %}selected{% endif %}>Down Syndrome</option>
+                            <option value="huntingtons_disease" {% if patient.conditions == 'huntingtons_disease' %}selected{% endif %}>Huntington's Disease</option>
+                        </optgroup>
+                        <optgroup label="Other">
+                            <option value="allergies" {% if patient.conditions == 'allergies' %}selected{% endif %}>Allergies</option>
+                            <option value="chronic_fatigue_syndrome" {% if patient.conditions == 'chronic_fatigue_syndrome' %}selected{% endif %}>Chronic Fatigue Syndrome</option>
+                            <option value="sleep_apnea" {% if patient.conditions == 'sleep_apnea' %}selected{% endif %}>Sleep Apnea</option>
+                            <option value="bph" {% if patient.conditions == 'bph' %}selected{% endif %}>Benign Prostatic Hyperplasia (BPH)</option>
+                            <option value="menstrual_disorders" {% if patient.conditions == 'menstrual_disorders' %}selected{% endif %}>Menstrual Disorders</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="medical_reports">Upload Medical Reports:</label>
+                    <input type="file" class="form-control-file" id="medical_reports" name="medical_reports">
+                </div>
+                <div class="form-group">
+                    <label for="additional_notes">Additional Notes:</label>
+                    <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Details</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

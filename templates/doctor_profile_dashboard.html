@@ -1,0 +1,148 @@
+{% extends 'doctor_base.html' %}
+
+{% block content %}
+<title>Doctor Profile Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .profile-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding-left: 28vw;
+
+    }
+
+    .profile-card {
+        max-width: 600px;
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-picture {
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+
+    .profile-details {
+        flex-grow: 1;
+    }
+
+    .profile-details h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .profile-details p {
+        margin: 5px 0;
+        color: #777;
+    }
+
+    .online-status {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .online-status span {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #28a745;
+    }
+
+    .contact-info {
+        margin-top: 20px;
+    }
+
+    .contact-info p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .specialization {
+        margin-top: 10px;
+    }
+
+    .specialization h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .specialization p {
+        margin: 5px 0;
+        color: #777;
+    }
+
+    .profile-actions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .profile-actions button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .profile-actions button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <img src="{{ doctor.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+            <div class="profile-details">
+                <h1>{{ doctor.full_name }}</h1>
+                <p>{{ doctor.degrees }}</p>
+                <p>{{ doctor.specialization }}</p>
+                <div class="online-status">
+                    <i class="fas fa-circle"></i>
+                    <span>{{ doctor.online|yesno:"Online,Offline" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <p><strong>Hospital Name:</strong> {{ doctor.hospital_name }}</p>
+            <p><strong>Address:</strong> {{ doctor.address }}</p>
+            <p><strong>Phone Number:</strong> {{ doctor.phone_number }}</p>
+        </div>
+
+        <div class="specialization">
+            <h3>Specialization</h3>
+            <p>{{ doctor.specialization }}</p>
+        </div>
+
+        <div class="profile-actions">
+            <button>Edit Profile</button>
+            <button>View Appointments</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

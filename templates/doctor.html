@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+        }
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        .profile-card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .section h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .patient-card, .history-card, .report-card, .chat-card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand text-white" href="#">Doctor Dashboard</a>
+        <div class="ml-auto">
+            <form id="status-form" method="POST" action="{% url 'toggle_status' %}">
+                {% csrf_token %}
+                <input type="hidden" name="status" id="status-input" value="{{ doc.online }}">
+                <button type="submit" id="status-toggle" class="btn {% if doc.online %}btn-success{% else %}btn-secondary{% endif %}">
+                    {% if doc.online %}Online{% else %}Offline{% endif %}
+                </button>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_dashboard_view' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctor_profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Search Patient History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"> Search Patient Reports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'add_booking_slots' %}">Add booking Slots </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="profile-card text-center">
+                    <img src="{{ doc.profile_picture.url }}" class="rounded-circle" alt="Profile Picture" width="150" height="150">
+                    <h2>{{ doc.full_name }}</h2>
+                    <p>Email: {{ doc.hospital_name }}</p>
+                    <p>Specialization: {{ doc.specialization }}</p>
+                </div>
+
+                <div class="section">
+                    <h3>Patients</h3>
+                    {% for patient in patients %}
+                    <div class="patient-card">
+                        <h4>{{ patient.user.username }}</h4>
+                        <p>Condition: {{ patient.condition }}</p>
+                        <p>Last Visit: {{ patient.last_visit }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>Patient History</h3>
+                    {% for history in patient_histories %}
+                    <div class="history-card">
+                        <h4>{{ history.patient.user.username }} - {{ history.treatment }}</h4>
+                        <p>Date: {{ history.date }}</p>
+                        <p>Prescription: {{ history.prescription }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>Patient Reports</h3>
+                    {% for report in patient_reports %}
+                    <div class="report-card">
+                        <h4>{{ report.patient.user.username }} - {{ report.report_type }}</h4>
+                        <p>Date: {{ report.date }}</p>
+                        <a href="{{ report.file.url }}" class="btn btn-primary">Download Report</a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>Appointments</h3>
+                    {% for chat in chat_requests %}
+                    <div class="chat-card">
+                        <h4>{{ chat.patient.user.username }}</h4>
+                        <p>Message: {{ chat.message }}</p>
+                        <a href="#" class="btn btn-primary">Chat Now</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.getElementById('status-toggle').addEventListener('click', function(event) {
+            event.preventDefault();
+            var form = document.getElementById('status-form');
+            var statusInput = document.getElementById('status-input');
+            var currentStatus = statusInput.value;
+    
+            // Toggle the status value
+            statusInput.value = currentStatus == 'True' ? 'False' : 'True';
+    
+            // Submit the form
+            form.submit();
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

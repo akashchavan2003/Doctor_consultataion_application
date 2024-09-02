@@ -1,0 +1,120 @@
+{% load static %}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    .profile-container {
+        max-width: 900px;
+        margin: 30px auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+    .profile-details {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .profile-details .detail {
+        flex-basis: 45%;
+        margin-bottom: 15px;
+    }
+    .profile-details .detail label {
+        font-weight: bold;
+        color: #343a40;
+    }
+    .profile-details .detail p {
+        margin: 0;
+        color: #555;
+    }
+    .notes-section {
+        margin-top: 20px;
+    }
+    .notes-section h5 {
+        font-weight: bold;
+        color: #343a40;
+        margin-bottom: 10px;
+    }
+    .notes-section p {
+        color: #555;
+    }
+    @media (max-width: 768px) {
+        .profile-details .detail {
+            flex-basis: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{% if patient.profile_picture %}{{ patient.profile_picture.url }}{% else %}/static/default-profile.png{% endif %}" alt="Profile Picture" class="profile-picture">
+        <h2>{{ patient.first_name }} {{ patient.last_name }}</h2>
+        <p>Username: {{ patient.username }}</p>
+    </div>
+    <div class="profile-details">
+        <div class="detail">
+            <label>Email:</label>
+            <p>{{ patient.email }}</p>
+        </div>
+        <div class="detail">
+            <label>Phone Number:</label>
+            <p>{{ patient.phone_number }}</p>
+        </div>
+        <div class="detail">
+            <label>Date of Birth:</label>
+            <p>{{ patient.date_of_birth }}</p>
+        </div>
+        <div class="detail">
+            <label>Address:</label>
+            <p>{{ patient.address }}</p>
+        </div>
+        <div class="detail">
+            <label>Height:</label>
+            <p>{{ patient.height }} cm</p>
+        </div>
+        <div class="detail">
+            <label>Weight:</label>
+            <p>{{ patient.weight }} kg</p>
+        </div>
+        <div class="detail">
+            <label>Age:</label>
+            <p>{{ patient.age }}</p>
+        </div>
+        <div class="detail">
+            <label>Medical Conditions:</label>
+            <p>{{ patient.conditions }}</p>
+        </div>
+        <div class="detail">
+            <label>Medical Reports:</label>
+            {% if patient.medical_reports %}
+                <p><a href="{{ patient.medical_reports.url }}" download>Download Report</a></p>
+            {% else %}
+                <p>No Reports Uploaded</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="notes-section">
+        <h5>Additional Notes:</h5>
+        <p>{{ patient.additional_notes }}</p>
+    </div>
+</div>
+</body>
+</html>
+

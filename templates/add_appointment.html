@@ -1,0 +1,92 @@
+{% extends 'doctor_base.html' %}
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<style>
+    .container1 {
+        width: 100%;
+        max-width: 600px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        margin: auto;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #34495e;
+    }
+    input[type="date"],
+    input[type="time"],
+    select {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #bdc3c7;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 48%;
+    }
+    button:hover {
+        background-color: #2980b9;
+    }
+    .cancel-button {
+        background-color: #e74c3c;
+    }
+    .cancel-button:hover {
+        background-color: #c0392b;
+    }
+</style>
+    <div class="container1">
+        <h2>Add Time Slots</h2>
+        <form method="post" action="{% url 'add_booking_slots' %}">
+            {% csrf_token %}
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="start_time">Start Time:</label>
+            <input type="time" id="start_time" name="start_time" required>
+
+            <label for="end_time">End Time:</label>
+            <input type="time" id="end_time" name="end_time" required>
+
+            <label for="is_available">Availability:</label>
+            <select id="is_available" name="is_available" required>
+                <option value="True">Available</option>
+                <option value="False">Unavailable</option>
+            </select>
+
+            <div class="button-group">
+                <button type="submit">Save Slot</button>
+                <button type="reset" class="cancel-button">Cancel</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

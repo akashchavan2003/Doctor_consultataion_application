@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 20px;
+            background-color: blue;
+        }
+        .chat-container {
+
+            display: flex;
+            flex-direction: column;
+            height: 80vh; /* Adjusted height to fit in the view */
+            border: 1px solid #ddd;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: scroll;
+            padding: 20px;
+        }
+        .chat-input {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message.sent {
+            text-align: right;
+        }
+        .message.received {
+            text-align: left;
+        }
+        .message p {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 60%;
+        }
+        .message.sent p {
+            background-color: #007bff;
+            color: white;
+        }
+        .message.received p {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        {doc.username}
+        <a class="navbar-brand" href="#">Chat Application</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <!-- Dynamic user information, adjust these according to your backend -->
+                <li class="nav-item">
+                    <span class="navbar-text">Logged in as: <strong>{{doctor.full_name}}</strong></span>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'doctor_details' doctor.username %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="chat-container mx-auto">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be appended here dynamically -->
+            </div>
+            <div class="chat-input">
+                <form id="chatForm">
+                    <div class="form-group mb-0">
+                        <input type="text" class="form-control" id="messageInput" placeholder="Type your message here..." required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Example function to simulate adding a new message
+            $('#chatForm').on('submit', function(event) {
+                event.preventDefault();
+                var message = $('#messageInput').val();
+                var messageHTML = '<div class="message sent"><p>' + message + '</p></div>';
+                $('#chatMessages').append(messageHTML);
+                $('#messageInput').val('');
+                $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+            });
+
+            // Example function to simulate receiving a message
+            function receiveMessage(message) {
+                var messageHTML = '<div class="message received"><p>' + message + '</p></div>';
+                $('#chatMessages').append(messageHTML);
+                $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+            }
+
+            // Simulate receiving a message after 5 seconds
+            setTimeout(function() {
+                receiveMessage('Hello, i am a virtual Assistant.');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

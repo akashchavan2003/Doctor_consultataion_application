@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+        }
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        .profile-card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .section h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .appointment-card, .history-card, .report-card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand text-white" href="#">Patient Dashboard</a>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'patient_dashboard_view' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'patient_profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Reports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Chat with Doctor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'update_profile' %}">Update Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'doctors_list' %}">Avilable Doctors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="profile-card text-center">
+                    <img src="profile_pic_url" class="rounded-circle" alt="Profile Picture" width="150" height="150">
+                    <h2>{{ pat.name }}</h2>
+                    <p>Email: {{ pat.email }}</p>
+                    <p>Date of Birth: {{pat.condition }}</p>
+                    <p>Phone: {{ pat.phone_number }}</p>
+                </div>
+
+                <div class="section">
+                    <h3>Upcoming Appointments</h3>
+                    {% for appointment in upcoming_appointments %}
+                    <div class="appointment-card">
+                        <h4>Doctor: {{ appointment.doctor.full_name }}</h4>
+                        <p>Scheduled Date: {{ appointment.scheduled_date }}</p>
+                        <p>Reason: {{ appointment.reason }}</p>
+                        <p>Status: {{ appointment.status }}</p>
+                        <a href="{% url 'appointment_details' appointment.id %}" class="btn btn-primary">View Details</a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>History</h3>
+                    {% for history in patient_history %}
+                    <div class="history-card">
+                        <h4>Consultation with {{ history.doctor.full_name }}</h4>
+                        <p>Date: {{ history.consultation_date }}</p>
+                        <p>Notes: {{ history.consultation_notes }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>Reports</h3>
+                    {% for report in patient_reports %}
+                    <div class="report-card">
+                        <h4>{{ report.report_type }}</h4>
+                        <p>Date: {{ report.date_issued }}</p>
+                        <a href="{{ report.file_url }}" class="btn btn-primary">Download Report</a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="section">
+                    <h3>Chat with Doctor</h3>
+                    <a href="{% url 'doctors_list' %}" class="btn btn-primary">Start Chat</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
