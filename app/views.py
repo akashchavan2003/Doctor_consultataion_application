@@ -132,7 +132,7 @@ def toggle_status(request):
         return render(request,'doctor.html',{'doc':doctor})
 from decimal import Decimal, InvalidOperation  
 
-
+@login_required
 def profile_update(request):
     user_id=request.user.id
     patient = Patient.objects.get(id=user_id)
@@ -182,7 +182,7 @@ def dashboard_view(request):
      return render(request,'user.html',{'pat':patient})
 
 
-
+@login_required
 def add_booking_slots(request):
     user_id=request.user.id
     doctor= Doctor.objects.get(user_id=user_id)
@@ -195,7 +195,7 @@ def add_booking_slots(request):
 
             # Create the AppointmentSlot with the correct doctor
             slot = AppointmentSlot.objects.create(
-                doctor=doctor,
+                doctor=user_id,
                 date=date,
                 start_time=st_t,
                 end_time=end_time,
@@ -204,10 +204,10 @@ def add_booking_slots(request):
             )
             slot.save()
             return render(request, 'add_appointment.html', {
-    'success_msg': f"Time Slot Added as on Date: {date}, From {st_t} TO {end_time}"
+    'success': f"Time Slot Added as on Date: {date}, From {st_t} TO {end_time}"
 })
     except Exception as e:
-        return render(request,'add_appointment',{'error_message':"Adding slots Failed....."})
+        return render(request,'add_appointment',{'error':"Adding slots Failed....."})
     return render(request, 'add_appointment.html', {'doctor': doctor,'doc':doctor})
 
 def showing_appointment_booking(request, id):
@@ -222,3 +222,17 @@ def doctor_profile_view(request):
     doctor=Doctor.objects.get(user=request.user)
     print(doctor.address)
     return render(request,'doctor_profile_dashboard.html',{'doctor':doctor,'doc':doctor})
+
+
+from datetime import date
+def doc_add_slots_show(request):
+    obj1 = AppointmentSlot.objects.none() 
+    try:
+        user_id=request.user.id
+        print(user_id)
+        
+        obj1=AppointmentSlot.objects.filter(doctor_user_id=user_id,date=date.today())
+        print(obj1)
+    except Exception as e:
+        print('unexpected error',e)
+    return render(request,'doctor_check_slots.html',{'slots':obj1})

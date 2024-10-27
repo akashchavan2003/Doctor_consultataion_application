@@ -40,7 +40,7 @@ class Doctor(models.Model):
 
 
 class AppointmentSlot(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='slots')
+    doctor_user_id = models.TextField(null=True)
     patient = models.ForeignKey(Patient, null=True, blank=True, on_delete=models.SET_NULL, related_name='slots')
     date = models.DateField()
     start_time = models.TimeField()

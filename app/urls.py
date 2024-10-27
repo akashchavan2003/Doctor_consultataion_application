@@ -18,6 +18,7 @@ urlpatterns = [
    path('add_booking_slots',views.add_booking_slots,name='add_booking_slots'),
    path('book_appointment/<int:id>/',views.showing_appointment_booking,name='book_appointment'),
    path('doctor_dashboard_view',views.doctor_dashboard,name='doctor_dashboard_view'),
-   path('doctor_profile/',views.doctor_profile_view,name='doctor_profile')
+   path('doctor_profile/',views.doctor_profile_view,name='doctor_profile'),
+   path('doc_slots_show/',views.doc_add_slots_show,name='doc_slots_show'),
 
 ]
